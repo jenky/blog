@@ -66,4 +66,22 @@ class User extends Authenticatable
     {
         return $this instanceof Admin;
     }
+
+    /**
+     * Get the avatar url.
+     *
+     * @return string
+     */
+    public function getAvatarUrl(array $options = [])
+    {
+        $options = http_build_query(
+            array_merge([
+                'rounded' => 'true',
+                'bold' => 'true',
+                'name' => $this->name,
+            ], $options)
+        );
+
+        return 'https://ui-avatars.com/api/?'.$options;
+    }
 }

@@ -11,8 +11,11 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+Route::get('/', 'PostController@home')->name('index');
+
+Route::resource('posts', 'PostController')->middleware('auth');
 
 Route::auth();

@@ -10,10 +10,17 @@
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "dependencies": {
+    "@inertiajs/inertia": "^0.1.7",
+    "@inertiajs/inertia-vue": "^0.1.2",
     "axios": "^0.19",
+    "bootstrap": "^4.4.1",
+    "bootstrap-vue": "^2.4.0",
     "lodash": "^4.17.13",
-    "shards-vue": "^1.0.7",
-    "vue": "^2.6.11"
+    "tiptap": "^1.26.6",
+    "tiptap-extensions": "^1.28.6",
+    "vue": "^2.6.11",
+    "vue-dayjs-plugin": "^1.0.0",
+    "vue-meta": "^2.3.2"
   },
   "devDependencies": {
     "cross-env": "^5.1",

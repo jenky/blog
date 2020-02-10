@@ -1,0 +1,165 @@
+@import "variables";
+
+@font-face {
+  font-family: '#{$icomoon-font-family}';
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?o232yg');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?o232yg#iefix') format('embedded-opentype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?o232yg') format('truetype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?o232yg') format('woff'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?o232yg##{$icomoon-font-family}') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+i {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: '#{$icomoon-font-family}' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.tiptap-add-col-after {
+  &:before {
+    content: $tiptap-add-col-after; 
+  }
+}
+.tiptap-add-col-before {
+  &:before {
+    content: $tiptap-add-col-before; 
+  }
+}
+.tiptap-add-row-after {
+  &:before {
+    content: $tiptap-add-row-after; 
+  }
+}
+.tiptap-add-row-before {
+  &:before {
+    content: $tiptap-add-row-before; 
+  }
+}
+.tiptap-bold {
+  &:before {
+    content: $tiptap-bold; 
+  }
+}
+.tiptap-checklist {
+  &:before {
+    content: $tiptap-checklist; 
+  }
+}
+.tiptap-code {
+  &:before {
+    content: $tiptap-code; 
+  }
+}
+.tiptap-merge-cells {
+  &:before {
+    content: $tiptap-merge-cells; 
+  }
+}
+.tiptap-delete-col {
+  &:before {
+    content: $tiptap-delete-col; 
+  }
+}
+.tiptap-delete-row {
+  &:before {
+    content: $tiptap-delete-row; 
+  }
+}
+.tiptap-delete-table {
+  &:before {
+    content: $tiptap-delete-table; 
+  }
+}
+.tiptap-github {
+  &:before {
+    content: $tiptap-github; 
+  }
+}
+.tiptap-hr {
+  &:before {
+    content: $tiptap-hr; 
+  }
+}
+.tiptap-image {
+  &:before {
+    content: $tiptap-image; 
+  }
+}
+.tiptap-italic {
+  &:before {
+    content: $tiptap-italic; 
+  }
+}
+.tiptap-link {
+  &:before {
+    content: $tiptap-link; 
+  }
+}
+.tiptap-mention {
+  &:before {
+    content: $tiptap-mention; 
+  }
+}
+.tiptap-ol {
+  &:before {
+    content: $tiptap-ol; 
+  }
+}
+.tiptap-paragraph {
+  &:before {
+    content: $tiptap-paragraph; 
+  }
+}
+.tiptap-quote {
+  &:before {
+    content: $tiptap-quote; 
+  }
+}
+.tiptap-redo {
+  &:before {
+    content: $tiptap-redo; 
+  }
+}
+.tiptap-remove {
+  &:before {
+    content: $tiptap-remove; 
+  }
+}
+.tiptap-strike {
+  &:before {
+    content: $tiptap-strike; 
+  }
+}
+.tiptap-table {
+  &:before {
+    content: $tiptap-table; 
+  }
+}
+.tiptap-ul {
+  &:before {
+    content: $tiptap-ul; 
+  }
+}
+.tiptap-underline {
+  &:before {
+    content: $tiptap-underline; 
+  }
+}
+.tiptap-undo {
+  &:before {
+    content: $tiptap-undo; 
+  }
+}
+
