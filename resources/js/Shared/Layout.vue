@@ -173,11 +173,17 @@
           <div class="row align-items-center">
             <div class="col-auto">
               <ul class="list-inline list-inline-dots mb-0">
-                <li class="list-inline-item"><a href="./docs/index.html">Documentation</a></li>
-                <li class="list-inline-item"><a href="./faq.html">FAQ</a></li>
+                <li class="list-inline-item"><a href="https://github.com/jenky/blog">Documentation</a></li>
               </ul>
             </div>
+            <div class="col-auto">
+              <a href="https://github.com/jenky/blog" target="_blank" class="btn btn-outline-primary btn-sm">Source code</a>
+            </div>
           </div>
+        </div>
+        <div class="col-12 col-lg-auto mt-3 mt-lg-0 text-center">
+          <span class="font-weight-bold text-primary"><i class="fe fe-code"></i></span> with <span class="font-weight-bold text-danger"><i class="fe fe-heart"></i></span> by <a href="https://github.com/jenky" target="_blank">Lynh</a>.
+          <a href="https://preview.tabler.io" target="_blank">Tabler</a> theme by <a href="https://codecalm.net" target="_blank">codecalm.net</a>
         </div>
       </div>
     </div>

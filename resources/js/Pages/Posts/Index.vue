@@ -19,6 +19,17 @@
             </span>
           </div>
         </form>
+        <label v-if="$page.auth.user.is_admin"
+          class="custom-switch">
+          <input type="checkbox"
+            class="custom-switch-input"
+            :true-value="1"
+            :false-value="0"
+            v-model="sudo">
+          <span v-b-popover.hover.bottom="'Sudo mode allows admin to view all posts made by other writers.'"
+            class="custom-switch-indicator"
+            title="Sudo mode"></span>
+        </label>
       </div>
     </div>
     <div class="card-body">
@@ -26,7 +37,7 @@
         <table class="table card-table table-striped table-vcenter">
           <thead>
             <tr>
-              <!-- <th v-if="$page.auth.user.is_admin" colspan="2">User</th> -->
+              <th v-if="$page.auth.user.is_admin && sudo">User</th>
               <th>Title</th>
               <th>Date</th>
               <th></th>
@@ -35,8 +46,7 @@
           <tbody>
             <tr v-for="post in posts.data"
               :key="post.id">
-              <!-- <td v-if="$page.auth.user.is_admin"><span class="avatar"></span></td>
-              <td v-if="$page.auth.user.is_admin">{{ post.user.name }}</td> -->
+              <td v-if="$page.auth.user.is_admin  && sudo">{{ post.user.name }}</td>
               <td>
                 <inertia-link
                   :href="$route('posts.show', post)"
@@ -45,25 +55,30 @@
                   {{ post.title }}
                 </inertia-link>
               </td>
-              <td class="text-nowrap">{{ post.created_at }}</td>
+              <td class="text-nowrap">
+                <span v-b-tooltip.hover
+                  :title="$date(post.created_at).format('LLLL')">
+                  {{ $date(post.created_at).format('L LT') }}
+                </span>
+              </td>
               <td>
                 <a @click.prevent="publish(post)"
                   v-if="!post.published"
                   v-b-tooltip.hover
                   title="Publish post"
-                  class="icon"><i class="fe fe-eye"></i>
+                  class="icon mx-1"><i class="fe fe-eye"></i>
                 </a>
                 <inertia-link
                   :href="$route('posts.edit', post)"
                   v-b-tooltip.hover
                   title="Edit post"
-                  class="icon">
+                  class="icon mx-1">
                   <i class="fe fe-edit"></i>
                 </inertia-link>
                 <a @click.prevent="destroy(post)"
                   v-b-tooltip.hover
                   title="Delete post"
-                  class="icon"><i class="fe fe-trash"></i>
+                  class="icon mx-1"><i class="fe fe-trash"></i>
                 </a>
               </td>
             </tr>
@@ -97,7 +112,17 @@ export default {
   },
   data () {
     return {
-      keyword: ''
+      keyword: '',
+      sudo: parseInt(this.$cookies.get('sudo')) || 0
+    }
+  },
+  watch: {
+    sudo (value) {
+      this.$cookies.set('sudo', value)
+      this.$inertia.reload({
+        preserveState: true,
+        preserveScroll: true,
+      })
     }
   },
   methods: {
@@ -124,6 +149,10 @@ export default {
       }
     },
     publish (post) {
+      if (post.published) {
+        return
+      }
+
       if (confirm('Do you want to publish this post?')) {
         this.$inertia.put(this.$route('posts.update', post), { publish: 1 }, {
           preserveState: true,

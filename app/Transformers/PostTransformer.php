@@ -34,6 +34,7 @@ class PostTransformer extends TransformerAbstract
     public function transform(Post $post)
     {
         $post->published = $post->isPublished();
+        $post->scheduled = $post->isScheduled();
 
         return $post->toArray();
     }

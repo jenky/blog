@@ -24,6 +24,7 @@ class UserSeeder extends Seeder
         );
 
         if ($confirm) {
+            $type = $type == 'user' ? null : $type;
             if ($user = User::create(compact('name', 'email', 'password', 'type'))) {
                 $this->command->info('Successfully create user: '.$user->name);
             } else {

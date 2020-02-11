@@ -76,9 +76,12 @@ class User extends Authenticatable
     {
         $options = http_build_query(
             array_merge([
+                'color' => '467fcf',
+                'background' => 'c8d9f1',
                 'rounded' => 'true',
                 'bold' => 'true',
                 'name' => $this->name,
+                'size' => 128,
             ], $options)
         );
 

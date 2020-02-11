@@ -44,9 +44,25 @@ class Post extends Model
      */
     public function scopePublished($query, $published = true)
     {
-        $method = $published ? 'whereNotNull' : 'whereNull';
+        if ($published) {
+            return $query->where('published_at', '<=', now());
+        }
 
-        return $query->{$method}('published_at');
+        return $query->where(function ($q) {
+            $q->whereNull('published_at')
+                ->orWhere('published_at', '>', now());
+        });
+    }
+
+    /**
+     * Prepare a date for array / JSON serialization.
+     *
+     * @param  \DateTimeInterface  $date
+     * @return string
+     */
+    protected function serializeDate(\DateTimeInterface $date)
+    {
+        return $date->format(\DateTime::ATOM);
     }
 
     /**
@@ -56,6 +72,18 @@ class Post extends Model
      */
     public function isPublished(): bool
     {
-        return ! is_null($this->published_at);
+        return ! is_null($this->published_at) &&
+            $this->published_at->lte(now());
+    }
+
+    /**
+     * Determine whether post is schedule published.
+     *
+     * @return bool
+     */
+    public function isScheduled(): bool
+    {
+        return ! is_null($this->published_at) &&
+            $this->published_at->gt(now());
     }
 }

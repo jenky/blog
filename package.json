@@ -19,7 +19,9 @@
     "tiptap": "^1.26.6",
     "tiptap-extensions": "^1.28.6",
     "vue": "^2.6.11",
+    "vue-cookies": "^1.6.1",
     "vue-dayjs-plugin": "^1.0.0",
+    "vue-flatpickr-component": "^8.1.5",
     "vue-meta": "^2.3.2"
   },
   "devDependencies": {

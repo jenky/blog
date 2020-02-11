@@ -60,9 +60,14 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
+        $user = auth()->user();
         $published = $request->published;
+        $sudo = ($user->isAdmin() && $request->cookie('sudo'));
+        $query = $sudo
+            ? Post::query()
+            : $user->posts()->getQuery();
 
-        $posts = QueryBuilder::for(auth()->user()->posts()->getQuery())
+        $posts = QueryBuilder::for($query)
             ->allowedSorts('title', 'created_at', 'published_at')
             ->defaultSort('-created_at')
             ->when($request->has('published'), function ($q) use ($published) {
@@ -76,6 +81,10 @@ class PostController extends Controller
             ->get();
 
         $posts = fractal($posts, new PostTransformer);
+
+        if ($sudo) {
+            $posts->parseIncludes('user');
+        }
 
         return inertia('Posts/Index', compact('posts', 'published'));
     }
@@ -167,8 +176,16 @@ class PostController extends Controller
         return back();
     }
 
+    /**
+     * Get shared view data.
+     *
+     * @param  \App\Models\Post|null $post
+     * @return array
+     */
     protected function getViewData(Post $post = null)
     {
+        $post = fractal($post ?: new Post, new PostTransformer);
+
         return compact('post');
     }
 }

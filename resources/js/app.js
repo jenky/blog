@@ -13,6 +13,7 @@ Vue.use(InertiaApp)
 Vue.use(VueMeta)
 Vue.use(BootstrapVue)
 Vue.use(VueDayjs)
+Vue.use(require('vue-cookies'))
 
 Vue.prototype.$route = (...args) => route(...args).url()
 Vue.prototype.$router = route()

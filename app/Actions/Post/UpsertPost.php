@@ -34,6 +34,7 @@ class UpsertPost extends Action
         return [
             'title' => $primaryRule.'|min:3',
             'content' => $primaryRule.'|min:10',
+            'schedule' => 'sometimes|date|after:today',
         ];
     }
 
@@ -49,8 +50,14 @@ class UpsertPost extends Action
             $post->user()->associate(auth()->user());
         }
 
-        if ($this->publish && ! $post->isPublished()) {
-            $post->published_at = now();
+        if (! $post->isPublished()) {
+            if ($this->publish) {
+                $post->published_at = now();
+            }
+
+            if ($this->schedule) {
+                $post->published_at = $this->schedule;
+            }
         }
 
         $post->fill($this->all())->save();
