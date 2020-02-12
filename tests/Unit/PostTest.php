@@ -34,6 +34,18 @@ class PostTest extends TestCase
         $this->assertTrue($post->isPublished());
     }
 
+    public function test_create_new_scheduled_post()
+    {
+        $title = $this->faker->sentence;
+
+        $post = factory(Post::class)->states('scheduled')
+            ->create(compact('title'));
+
+        $this->assertDatabaseHas('posts', compact('title'));
+
+        $this->assertTrue($post->isScheduled());
+    }
+
     public function test_create_and_update_post_using_action()
     {
         $this->actingAs(
@@ -51,7 +63,7 @@ class PostTest extends TestCase
         $this->assertFalse($post->isPublished());
         $this->assertSame($post->user, $user);
 
-        $updated = UpsertPost::execute([
+        $published = UpsertPost::execute([
             'post' => $post,
             'title' => $title = $this->faker->sentence,
             'publish' => 1,
@@ -59,6 +71,14 @@ class PostTest extends TestCase
 
         $this->assertDatabaseHas('posts', compact('title'));
 
-        $this->assertTrue($post->isPublished());
+        $this->assertTrue($published->isPublished());
+
+        $scheduled = UpsertPost::execute([
+            'title' => $this->faker->sentence,
+            'content' => $this->faker->paragraphs(5, true),
+            'schedule' => now()->addDays(2),
+        ]);
+
+        $this->assertTrue($scheduled->isScheduled());
     }
 }

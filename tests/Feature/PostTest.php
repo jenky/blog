@@ -137,4 +137,26 @@ class PostTest extends TestCase
 
         $this->assertDeleted($post2);
     }
+
+    public function test_schedule_post()
+    {
+        $post = factory(Post::class)
+            ->state('scheduled')
+            ->create();
+
+        $this->get(route('posts.show', $post))
+            ->assertNotFound();
+
+        $this->actingAs($post->user)
+            ->get(route('posts.show', $post))
+            ->assertOk();
+
+        $admin = factory(User::class)->states('admin')
+            ->create()
+            ->fresh();
+
+        $this->actingAs($admin)
+            ->get(route('posts.show', $post))
+            ->assertOk();
+    }
 }

@@ -17,3 +17,7 @@ $factory->define(Post::class, function (Faker $faker) {
 $factory->state(Post::class, 'published', [
     'published_at' => now(),
 ]);
+
+$factory->state(Post::class, 'scheduled', [
+    'published_at' => now()->addDays(3),
+]);
