@@ -35,6 +35,31 @@ class GeneralTest extends TestCase
         ));
     }
 
+    public function test_fail_register()
+    {
+        $this->post(route('register'), [
+            'name' => $this->faker->name,
+            'email' => $this->faker->safeEmail,
+        ])
+            ->assertRedirect()
+            ->assertSessionHasErrors('password');
+
+        $this->post(route('register'), [
+            'name' => $this->faker->name,
+            'email' => 'wrong-format',
+        ])
+            ->assertRedirect()
+            ->assertSessionHasErrors(['email', 'password']);
+
+        $this->post(route('register'), [
+            'name' => $this->faker->name,
+            'email' => $this->faker->safeEmail,
+            'password' => 'abc',
+        ])
+            ->assertRedirect()
+            ->assertSessionHasErrors(['password']);
+    }
+
     public function test_login()
     {
         $user = factory(User::class)->create();
@@ -45,5 +70,24 @@ class GeneralTest extends TestCase
         ])->assertRedirect();
 
         $this->assertAuthenticatedAs($user);
+    }
+
+    public function test_fail_login()
+    {
+        $user = factory(User::class)->create();
+
+        $this->post(route('login'), [
+            'email' => 'email@not-existed.error',
+            'password' => 'password',
+        ])
+            ->assertRedirect()
+            ->assertSessionHasErrors(['email']);
+
+        $this->post(route('login'), [
+            'email' => $user->email,
+            'password' => 'incorrect-password',
+        ])
+            ->assertRedirect()
+            ->assertSessionHasErrors();
     }
 }

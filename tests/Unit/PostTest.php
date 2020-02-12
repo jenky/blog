@@ -2,7 +2,9 @@
 
 namespace Tests\Unit;
 
+use App\Actions\Post\UpsertPost;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -26,6 +28,34 @@ class PostTest extends TestCase
 
         $post = factory(Post::class)->states('published')
             ->create(compact('title'));
+
+        $this->assertDatabaseHas('posts', compact('title'));
+
+        $this->assertTrue($post->isPublished());
+    }
+
+    public function test_create_and_update_post_using_action()
+    {
+        $this->actingAs(
+            $user = factory(User::class)->create()
+        );
+
+        $post = UpsertPost::execute($data = [
+            'title' => $this->faker->sentence,
+            'content' => $this->faker->paragraphs(5, true),
+        ]);
+
+        $this->assertDatabaseHas('posts', $data);
+
+        $this->assertNotNull($post);
+        $this->assertFalse($post->isPublished());
+        $this->assertSame($post->user, $user);
+
+        $updated = UpsertPost::execute([
+            'post' => $post,
+            'title' => $title = $this->faker->sentence,
+            'publish' => 1,
+        ]);
 
         $this->assertDatabaseHas('posts', compact('title'));
 
