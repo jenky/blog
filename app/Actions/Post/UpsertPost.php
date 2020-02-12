@@ -56,7 +56,7 @@ class UpsertPost extends Action
             }
 
             if ($this->schedule) {
-                $post->published_at = $this->schedule;
+                $post->published_at = datetime($this->schedule);
             }
         }
 
