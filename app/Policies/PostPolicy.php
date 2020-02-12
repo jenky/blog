@@ -44,12 +44,23 @@ class PostPolicy
     /**
      * Determine whether the user can view the post.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\User|null  $user
      * @param  \App\Post  $post
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @return mixed
      */
-    public function view(User $user, Post $post)
+    public function view(?User $user, Post $post)
     {
+        if ($post->isScheduled()) {
+            if (! $user) {
+                abort(404);
+            }
+
+            if ($post->user_id != $user->id) {
+                abort(404);
+            }
+        }
+
         return true;
     }
 

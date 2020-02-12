@@ -17,6 +17,10 @@ class PostController extends Controller
      */
     public function __construct()
     {
+        $this->middleware('auth', [
+            'except' => ['home', 'show'],
+        ]);
+
         inertia()->share('auth.can', [
             'post' => [
                 'read' => true,

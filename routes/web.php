@@ -16,6 +16,6 @@
 // });
 Route::get('/', 'PostController@home')->name('index');
 
-Route::resource('posts', 'PostController')->middleware('auth');
+Route::resource('posts', 'PostController');
 
 Route::auth();
