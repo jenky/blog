@@ -1,9 +1,11 @@
 <template>
   <div class="editor">
     <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
-      <div class="menubar text-center">
+      <div :class="['menubar text-center', { 'is-hidden': hidden }]">
 
         <button
+          v-b-tooltip.hover
+          title="Bold"
           class="menubar__button btn btn-sm btn-light"
           :class="{ 'active': isActive.bold() }"
           @click.prevent="commands.bold"
@@ -12,6 +14,8 @@
         </button>
 
         <button
+          v-b-tooltip.hover
+          title="Italic"
           class="menubar__button btn btn-sm btn-light"
           :class="{ 'active': isActive.italic() }"
           @click.prevent="commands.italic"
@@ -20,6 +24,8 @@
         </button>
 
         <button
+          v-b-tooltip.hover
+          title="Strike"
           class="menubar__button btn btn-sm btn-light"
           :class="{ 'active': isActive.strike() }"
           @click.prevent="commands.strike"
@@ -28,6 +34,8 @@
         </button>
 
         <button
+          v-b-tooltip.hover
+          title="Underline"
           class="menubar__button btn btn-sm btn-light"
           :class="{ 'active': isActive.underline() }"
           @click.prevent="commands.underline"
@@ -36,6 +44,8 @@
         </button>
 
         <button
+          v-b-tooltip.hover
+          title="Code"
           class="menubar__button btn btn-sm btn-light"
           :class="{ 'active': isActive.code() }"
           @click.prevent="commands.code"
@@ -44,6 +54,8 @@
         </button>
 
         <button
+          v-b-tooltip.hover
+          title="Paragraph"
           class="menubar__button btn btn-sm btn-light"
           :class="{ 'active': isActive.paragraph() }"
           @click.prevent="commands.paragraph"
@@ -52,6 +64,8 @@
         </button>
 
         <button
+          v-b-tooltip.hover
+          title="Heading"
           class="menubar__button btn btn-sm btn-light"
           :class="{ 'active': isActive.heading({ level: 1 }) }"
           @click.prevent="commands.heading({ level: 1 })"
@@ -60,6 +74,8 @@
         </button>
 
         <button
+          v-b-tooltip.hover
+          title="Title"
           class="menubar__button btn btn-sm btn-light"
           :class="{ 'active': isActive.heading({ level: 2 }) }"
           @click.prevent="commands.heading({ level: 2 })"
@@ -68,6 +84,8 @@
         </button>
 
         <button
+          v-b-tooltip.hover
+          title="Sub title"
           class="menubar__button btn btn-sm btn-light"
           :class="{ 'active': isActive.heading({ level: 3 }) }"
           @click.prevent="commands.heading({ level: 3 })"
@@ -76,6 +94,8 @@
         </button>
 
         <button
+          v-b-tooltip.hover
+          title="Bullet list"
           class="menubar__button btn btn-sm btn-light"
           :class="{ 'active': isActive.bullet_list() }"
           @click.prevent="commands.bullet_list"
@@ -84,6 +104,8 @@
         </button>
 
         <button
+          v-b-tooltip.hover
+          title="Ordered list"
           class="menubar__button btn btn-sm btn-light"
           :class="{ 'active': isActive.ordered_list() }"
           @click.prevent="commands.ordered_list"
@@ -92,6 +114,8 @@
         </button>
 
         <button
+          v-b-tooltip.hover
+          title="Blockquote"
           class="menubar__button btn btn-sm btn-light"
           :class="{ 'active': isActive.blockquote() }"
           @click.prevent="commands.blockquote"
@@ -100,6 +124,8 @@
         </button>
 
         <button
+          v-b-tooltip.hover
+          title="Code block"
           class="menubar__button btn btn-sm btn-light"
           :class="{ 'active': isActive.code_block() }"
           @click.prevent="commands.code_block"
@@ -108,6 +134,8 @@
         </button>
 
         <button
+          v-b-tooltip.hover
+          title="Line break"
           class="menubar__button btn btn-sm btn-light"
           @click.prevent="commands.horizontal_rule"
         >
@@ -115,6 +143,8 @@
         </button>
 
         <button
+          v-b-tooltip.hover
+          title="Undo"
           class="menubar__button btn btn-sm btn-light"
           @click.prevent="commands.undo"
         >
@@ -122,12 +152,21 @@
         </button>
 
         <button
+          v-b-tooltip.hover
+          title="Redo"
           class="menubar__button btn btn-sm btn-light"
           @click.prevent="commands.redo"
         >
           <icon name="redo" />
         </button>
 
+        <!-- <button
+          v-b-popover.hover.top="'Styling with Markdown is supported'"
+          title="Help"
+          class="menubar__button btn btn-sm btn-light ml-2"
+        >
+          <i class="fe fe-help-circle"></i>
+        </button> -->
       </div>
     </editor-menu-bar>
 
@@ -196,6 +235,7 @@ import {
   Strike,
   Underline,
   History,
+  Placeholder
 } from 'tiptap-extensions'
 
 export default {
@@ -209,6 +249,14 @@ export default {
         // The value must match one of these strings
         return ['html', 'json'].indexOf(value) !== -1
       }
+    },
+    placeholder: {
+      type: String,
+      default: 'Write something …'
+    },
+    hidden: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
@@ -239,6 +287,9 @@ export default {
           new Strike(),
           new Underline(),
           new History(),
+          new Placeholder({
+            emptyNodeText: this.placeholder
+          }),
         ],
         content: this.value,
         onUpdate: ({ getJSON, getHTML }) => {
@@ -260,3 +311,14 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.editor p.is-editor-empty:first-child::before {
+  content: attr(data-empty-text);
+  float: left;
+  color: #aaa;
+  pointer-events: none;
+  height: 0;
+  font-style: italic;
+}
+</style>
