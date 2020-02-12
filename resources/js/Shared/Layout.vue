@@ -22,7 +22,7 @@
             </div>
             <div v-if="$page.auth.user"
               class="dropdown">
-              <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
+              <!-- <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
                 <span class="avatar" :style="{ backgroundImage: `url('${$page.auth.user.avatar_url}')` }"></span>
                 <span class="ml-2 d-none d-lg-block">
                   <span class="text-default">{{ $page.auth.user.name }}</span>
@@ -50,7 +50,46 @@
                 <a class="dropdown-item" href="#">
                   <i class="dropdown-icon fe fe-log-out"></i> Sign out
                 </a>
-              </div>
+              </div> -->
+              <b-dropdown
+                toggle-tag="a"
+                variant="link"
+                toggle-class="nav-link pr-0 leading-none"
+                no-caret
+                right
+                menu-class="dropdown-menu-right dropdown-menu-arrow">
+                  <template #button-content>
+                    <span class="avatar" :style="{ backgroundImage: `url('${$page.auth.user.avatar_url}')` }"></span>
+                    <span class="ml-2 d-none d-lg-block">
+                      <span class="text-default">{{ $page.auth.user.name }}</span>
+                      <small class="text-muted d-block mt-1">{{ $page.auth.user.is_admin ? 'Administrator' : 'Writer' }}</small>
+                    </span>
+                  </template>
+
+                  <li>
+                    <inertia-link
+                      class="dropdown-item"
+                      :href="$route('posts.index')">
+                      <i class="dropdown-icon fe fe-file-text"></i> Posts
+                    </inertia-link>
+                  </li>
+                  <li>
+                    <div class="dropdown-divider"></div>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">
+                      <i class="dropdown-icon fe fe-help-circle"></i> Need help?
+                    </a>
+                  </li>
+                  <li>
+                    <inertia-link
+                      class="dropdown-item"
+                      :href="$route('logout')"
+                      method="post">
+                      <i class="dropdown-icon fe fe-log-out"></i> Sign out
+                    </inertia-link>
+                  </li>
+              </b-dropdown>
             </div>
           </div>
           <!-- <a href="#" class="header-toggler d-lg-none ml-3 ml-lg-0" data-toggle="collapse" data-target="#headerMenuCollapse">
