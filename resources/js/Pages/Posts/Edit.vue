@@ -50,7 +50,8 @@
             </div>
           </div>
         </div>
-        <Editor v-model="form.content" />
+        <Editor v-model="form.content"
+          placeholder="Write something. Styling with Markdown is supported" />
         <div class="btn-list mt-4 text-right">
           <button type="submit" class="btn btn-primary btn-space">Save</button>
         </div>
