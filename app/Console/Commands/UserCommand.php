@@ -1,37 +1,64 @@
 <?php
 
+namespace App\Console\Commands;
+
 use App\Enums\UserType;
 use App\Models\User;
-use Illuminate\Database\Seeder;
+use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 
-class UserSeeder extends Seeder
+class UserCommand extends Command
 {
     /**
-     * Run the database seeds.
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'app:user
+                            {--A|admin : Create new user as Administrator}';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Create a new user';
+
+    /**
+     * Create a new command instance.
      *
      * @return void
      */
-    public function run()
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
     {
         $name = $this->name();
         $email = $this->email();
         $password = $this->password();
-        $type = $this->type();
+        $type = $this->option('admin') ? 'admin' : $this->type();
 
-        $confirm = $this->command->confirm(
+        $confirm = $this->confirm(
             sprintf('Create new user: %s - %s | %s', $name, $email, $type)
         );
 
         if ($confirm) {
             $type = $type == 'user' ? null : $type;
             if ($user = User::create(compact('name', 'email', 'password', 'type'))) {
-                $this->command->info('Successfully create user: '.$user->name);
+                $this->info('Successfully create user: '.$user->name);
             } else {
-                $this->command->error('Unable to create new user. Please try again.');
+                $this->error('Unable to create new user. Please try again.');
             }
         } else {
-            $this->command->comment('Aborted!');
+            $this->comment('Aborted!');
         }
     }
 
@@ -42,7 +69,7 @@ class UserSeeder extends Seeder
      */
     protected function name()
     {
-        $value = $this->command->ask('What is your name?');
+        $value = $this->ask('What is your name?');
 
         if (! $value) {
             return $this->name();
@@ -58,11 +85,9 @@ class UserSeeder extends Seeder
      */
     protected function email()
     {
-        $value = $this->command->ask('What is your e-mail address?');
+        $value = $this->ask('What is your e-mail address?');
 
-        // TODO: Validate email address
-
-        if (! $value) {
+        if (! $value || ! filter_var($value, FILTER_VALIDATE_EMAIL)) {
             return $this->email();
         }
 
@@ -76,7 +101,7 @@ class UserSeeder extends Seeder
      */
     protected function password()
     {
-        $value = $this->command->secret('What is your password?');
+        $value = $this->secret('What is your password?');
 
         if (! $value) {
             return $this->password();
@@ -96,7 +121,7 @@ class UserSeeder extends Seeder
 
         $choices = Arr::prepend($values, 'user');
 
-        $value = $this->command->choice('What is your role?', $choices, 0);
+        $value = $this->choice('What is your role?', $choices, 0);
 
         if (! $value) {
             return $this->type();
