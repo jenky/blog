@@ -4,11 +4,13 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Arr;
 use Tests\TestCase;
 
 class GeneralTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, WithFaker;
 
     public function test_home_page()
     {
@@ -17,15 +19,31 @@ class GeneralTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_create_posts()
+    public function test_register()
     {
-        $this->get(route('posts.create'))
-            ->assertRedirect(route('login'));
+        $this->post(route('register'), $data = [
+            'name' => $this->faker->name,
+            'email' => $this->faker->safeEmail,
+            'password' => '__password__',
+            'password_confirmation' => '__password__',
+        ])->assertRedirect();
 
-        $this->actingAs(
-                factory(User::class)->create()
-            )
-            ->get(route('posts.create'))
-            ->assertOk();
+        $this->assertAuthenticated();
+
+        $this->assertDatabaseHas('users', Arr::except(
+            $data, ['password', 'password_confirmation']
+        ));
+    }
+
+    public function test_login()
+    {
+        $user = factory(User::class)->create();
+
+        $this->post(route('login'), [
+            'email' => $user->email,
+            'password' => 'password',
+        ])->assertRedirect();
+
+        $this->assertAuthenticatedAs($user);
     }
 }

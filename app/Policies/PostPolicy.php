@@ -73,7 +73,7 @@ class PostPolicy
      */
     public function update(User $user, Post $post)
     {
-        return tap($user->id === $post->user_id, function ($allowed) {
+        return tap($user->id == $post->user_id, function ($allowed) {
             inertia()->share('auth.can.post.write', $allowed);
         });
     }
