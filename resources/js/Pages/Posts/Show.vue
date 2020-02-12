@@ -19,7 +19,9 @@
           <div class="media-body">
             <h4 class="m-0">{{ post.user.name }}</h4>
             <p class="text-muted mb-0">{{ post.user.is_admin ? 'Administrator' : 'Writer' }}</p>
-            <p class="text-muted-dark font-italic" v-if="post.published_at">Published at {{ $date(post.published_at).format('llll') }}</p>
+            <p class="text-muted-dark font-italic" v-if="post.published_at">
+              {{ post.scheduled ? 'Schedule to publish' : 'Published' }} at {{ $date(post.published_at).format('llll') }}
+            </p>
           </div>
         </div>
 
