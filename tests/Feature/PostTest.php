@@ -95,14 +95,46 @@ class PostTest extends TestCase
 
         $this->assertDatabaseHas('posts', $data);
 
-        $admin = factory(User::class)->states('admin')->create();
+        $admin = factory(User::class)->states('admin')
+            ->create()
+            ->fresh();
 
-        $this->actingAs($admin->fresh())
+        $this->actingAs($admin)
             ->put(route('posts.update', $post), $data = [
                 'title' => $this->faker->sentence,
             ])
             ->assertRedirect();
 
         $this->assertDatabaseHas('posts', $data);
+    }
+
+    public function test_delete_post()
+    {
+        $posts = factory(Post::class, 2)->create();
+
+        [$post1, $post2] = $posts->all();
+
+        $this->assertNotNull($post1);
+        $this->assertNotNull($post2);
+
+        $this->actingAs($this->user)
+            ->delete(route('posts.destroy', $post1))
+            ->assertForbidden();
+
+        $this->actingAs($post1->user)
+            ->delete(route('posts.destroy', $post1))
+            ->assertRedirect();
+
+        $this->assertDeleted($post1);
+
+        $admin = factory(User::class)->states('admin')
+            ->create()
+            ->fresh();
+
+        $this->actingAs($admin)
+            ->delete(route('posts.destroy', $post2))
+            ->assertRedirect();
+
+        $this->assertDeleted($post2);
     }
 }

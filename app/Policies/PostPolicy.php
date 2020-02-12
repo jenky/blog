@@ -87,7 +87,7 @@ class PostPolicy
      */
     public function delete(User $user, Post $post)
     {
-        return tap($user->id === $post->user_id, function ($allowed) {
+        return tap($user->id == $post->user_id, function ($allowed) {
             inertia()->share('auth.can.post.destroy', $allowed);
         });
     }
