@@ -43,7 +43,7 @@ class UserCommand extends Command
     {
         $name = $this->name();
         $email = $this->email();
-        $password = $this->password();
+        $password = bcrypt($this->password());
         $type = $this->option('admin') ? 'admin' : $this->type();
 
         $confirm = $this->confirm(
