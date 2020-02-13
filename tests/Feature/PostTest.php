@@ -28,9 +28,9 @@ class PostTest extends TestCase
             ->assertRedirect(route('login'));
 
         $this->post(route('posts.store'), [
-                'title' => $this->faker->sentence,
-                'content' => $this->faker->paragraphs(5, true),
-            ])
+            'title' => $this->faker->sentence,
+            'content' => $this->faker->paragraphs(5, true),
+        ])
             ->assertRedirect(route('login'));
 
         $this->actingAs($this->user)
@@ -72,6 +72,9 @@ class PostTest extends TestCase
         $this->assertNotNull($post);
 
         $this->assertTrue($post->isPublished());
+
+        $this->get(route('posts.show', $post))
+            ->assertOk();
     }
 
     public function test_edit_post()

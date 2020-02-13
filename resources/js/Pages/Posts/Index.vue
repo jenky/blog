@@ -40,7 +40,7 @@
               <th v-if="$page.auth.user.is_admin && sudo">User</th>
               <th>Title</th>
               <th>Date</th>
-              <th></th>
+              <th width="15%"></th>
             </tr>
           </thead>
           <tbody>
@@ -67,6 +67,12 @@
                   v-b-tooltip.hover
                   title="Publish post"
                   class="icon mx-1"><i class="fe fe-eye"></i>
+                </a>
+                <a @click.prevent="unpublish(post)"
+                  v-if="post.published && $page.auth.user.is_admin"
+                  v-b-tooltip.hover
+                  title="Unpublish post"
+                  class="icon mx-1"><i class="fe fe-eye-off"></i>
                 </a>
                 <inertia-link
                   :href="$route('posts.edit', post)"
@@ -155,6 +161,18 @@ export default {
 
       if (confirm('Do you want to publish this post?')) {
         this.$inertia.put(this.$route('posts.update', post), { publish: 1 }, {
+          preserveState: true,
+          preserveScroll: true,
+        })
+      }
+    },
+    unpublish (post) {
+      if (!post.published || !this.$page.auth.user.is_admin) {
+        return
+      }
+
+      if (confirm('Do you want to unpublish this post?')) {
+        this.$inertia.put(this.$route('posts.update', post), { unpublish: 1 }, {
           preserveState: true,
           preserveScroll: true,
         })

@@ -73,6 +73,13 @@ class PostTest extends TestCase
 
         $this->assertTrue($published->isPublished());
 
+        $unpublished = UpsertPost::execute([
+            'post' => $post,
+            'unpublish' => 1,
+        ]);
+
+        $this->assertFalse($unpublished->isPublished());
+
         $scheduled = UpsertPost::execute([
             'title' => $this->faker->sentence,
             'content' => $this->faker->paragraphs(5, true),

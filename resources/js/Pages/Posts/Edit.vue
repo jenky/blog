@@ -88,7 +88,7 @@ export default {
         title: this.post ? this.post.title : '',
         content: this.post ? this.post.content : '',
       },
-      publishMode: (this.post && this.post.scheduled) ? 'schedule' : 'now',
+      publishMode: (this.post && this.post.scheduled) ? 'schedule' : null,
       publishedDate: (this.post && this.post.scheduled)
         ? this.$date(this.post.published_at).toDate()
         : null,

@@ -27,7 +27,7 @@
 
         <div class="d-none d-lg-block mt-6">
           <inertia-link :href="$route('posts.edit', post)"
-            v-if="$page.auth.can.post.write"
+            v-if="$page.auth.user && $page.auth.can.post.write"
             class="text-muted text-decoration-none">
             <i class="fe fe-edit"></i>
             Edit this post

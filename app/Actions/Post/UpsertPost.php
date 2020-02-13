@@ -58,6 +58,10 @@ class UpsertPost extends Action
             if ($this->schedule) {
                 $post->published_at = datetime($this->schedule);
             }
+        } else {
+            if ($this->unpublish) {
+                $post->published_at = null;
+            }
         }
 
         $post->fill($this->all())->save();
