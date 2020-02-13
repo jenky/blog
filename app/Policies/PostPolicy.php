@@ -51,7 +51,7 @@ class PostPolicy
      */
     public function view(?User $user, Post $post)
     {
-        if ($post->isScheduled()) {
+        if ($post->isScheduled() || ! $post->isPublished()) {
             if (! $user) {
                 abort(404);
             }
